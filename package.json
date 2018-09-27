@@ -8,6 +8,7 @@
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "http-errors": "^1.7.1",
+    "mongoose": "^5.2.17",
     "superagent": "^4.0.0-beta.5",
     "uuid": "^3.3.2",
     "winston": "^3.1.0"
@@ -25,12 +26,19 @@
     "justJest": "jest --coverage",
     "justLint": "./node_modules/eslint/bin/eslint.js ./src/*.js",
     "start-server": "./makesure.sh; node ./src/app.js",
-    "dbOn": "",
-    "dbOff": ""
+    "dbDevOn": "mkdir -p ./testdb && mongod --dbpath ./testdb",
+    "devDbOff": "./killDevDb.sh",
+    "dbOn": "mkdir -p ./db && mongod --dbpath ./db",
+    "dbOff": "killall mongod"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bgwest/11-14-express-api.git"
+  },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/src/__test__/lib/test.env.js"
+    ]
   },
   "keywords": [],
   "author": "",

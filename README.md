@@ -3,21 +3,34 @@
 [![Build Status](https://travis-ci.com/bgwest/11-14-express-api.svg?branch=master)](https://travis-ci.com/bgwest/11-14-express-api)
 ## Current Features
 
-These methods currently exist for creating, changing, deleting, and getting user data. Updates to this API will continue to stream in as this project moves forward. Currently I am part 12 of 14. 
+These methods currently exist for creating, changing, deleting, and getting user data. Updates to this API will continue to stream in as this project moves forward. Currently I am part 13 of 14.
+
+#####Note: 
+storage has been moved from simple array / object (hash maps) to mongodb. All should still work the same but behind the scences I am now using a database (mongodb) and ORM (mongoose) to perform the data processing.
+#####Also note: 
+new npm scripts have been added including a bash script to easily manage the devDb.
+
+#####Current working methods:
 * PUT
 * DELETE
 * POST
 * GET
 
-Utilizes:
+#####Utilizing:
 * express
 * middleware e.g. body-parser
+* mongodb
+* mongoose
 
 ## How To
 
-#####Example uses:
+#####Example testing:
+
 ```
+npm run devDbOn
 npm run start-server
+npm run justJest
+npm run devDbOff
 ````
 
 [x] adding a new user:
@@ -155,17 +168,23 @@ X-Powered-By: Express
 
 ### Tests Performed with Jest
 
-* test 1: create user - should respond 200 and return a new user in json
+######testing app.js routes and responses.
 
-* test 2: create user incorrectly - should respond 400 if there is no job role title
+* 1: create user - should respond 200 and return a new user in json
 
-* test 3: create random user - should respond with 200 status code and a json note if there is a matching id
+* 2: attempt POST with no content to send - should receive 400
 
-* test4: user removal - should respond 204 if a user is removed
+* 3: send GET for matching id - should respond with 200 && json a note
 
-* test5: delete request - should respond 404 if user does not exist
+* 4: attempt 'valid' GET request with an invalid id - should receive 404
 
-* test6: username update - if successful, should respond 204
+* 5: test PUT method - should return updated body && 200 status
+
+* 6: test PUT method in the case where no body content is provided - should return 400
+
+* 7: attempt user creation and then deletion - successful delete should return 201
+
+* 8: attempt to delete with bad ID - should return 404
 
 
 ### Installing
