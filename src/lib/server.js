@@ -9,6 +9,7 @@ const loggerMiddleware = require('./logger-middleware');
 const errorMiddleware = require('./error-middleware');
 
 const userRoutes = require('../routes/user-router');
+const blogPostRoutes = require('../routes/blog-post-router');
 
 const app = express();
 
