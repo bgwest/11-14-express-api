@@ -6,7 +6,7 @@ const UserModel = require('../../model/user-schema');
 const userMock = module.exports = {};
 
 // development note: p'Var' is a naming convention to know that the function will return promise
-userMock.pCreateNoteMock = () => {
+userMock.pCreateUserMock = () => {
   return new UserModel({
     username: faker.lorem.words(1),
     title: faker.lorem.words(2),

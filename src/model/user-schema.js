@@ -20,12 +20,12 @@ const UserSchema = mongoose.Schema({
   blogPosts: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'blog-post', // should this be blog-post-schema??
+      ref: 'blog-post-schema', // name of model in mongoose.model export
     },
   ],
 },
-{ // hard to find documentation on this
+{ // hard to find documentation on usePushEach
   usePushEach: true,
 });
 
-module.exports = mongoose.model('userschema', UserSchema);
+module.exports = mongoose.model('user-schema', UserSchema);

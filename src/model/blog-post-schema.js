@@ -19,10 +19,10 @@ const blogPostSchema = mongoose.Schema({
   content: {
     type: String,
   },
-  category: { // development note: this is where we are making the connection to user-schema
+  user: { // development note: this is where we are making the connection to user-schema
     type: mongoose.Schema.Types.ObjectId,
     required: true, // we need to have a one before we can create a many
-    ref: 'category',
+    ref: 'user-schema', // name of model in mongoose.model export
   },
 });
 // -------------------------------------------------------------------------------------
@@ -31,30 +31,30 @@ const blogPostSchema = mongoose.Schema({
 function blogPostPreHook(done) {
   // development note: the value of 'this' inside this function is going to be the document
   // that is going to be saved
-  return UserModel.findById(this.category)
-    .then((categoryFound) => {
-      if (!categoryFound) {
-        throw new HttpError(404, 'category not found');
+  return UserModel.findById(this.user)
+    .then((userFound) => {
+      if (!userFound) {
+        throw new HttpError(404, 'user not found');
       }
       // first, make changes to the model
-      categoryFound.blogPosts.push(this._id);
+      userFound.blogPosts.push(this._id);
       // then, save the model
-      return categoryFound.save();
+      return userFound.save();
     })
-    .then(value => done(value)) // () => done()
+    .then(() => done()) // value => done(value)
     .catch(error => done(error));
 }
 
 const blogPostPostHook = (document, done) => {
-  return UserModel.findById(document.category)
-    .then((categoryFound) => {
-      if (!categoryFound) {
-        throw new HttpError(500, 'category not found');
+  return UserModel.findById(document.user)
+    .then((userFound) => {
+      if (!userFound) {
+        throw new HttpError(500, 'user not found');
       }
-      categoryFound.blogPosts = categoryFound.blogPosts.filter((blogPost) => {
+      userFound.blogPosts = userFound.blogPosts.filter((blogPost) => {
         return blogPost._id.toString() !== document._id.toString();
       });
-      return categoryFound.save();
+      return userFound.save();
     })
     .then(() => done()) // value => done(value)
     .catch(error => done(error)); // .catch(done);
@@ -64,4 +64,4 @@ blogPostSchema.pre('save', blogPostPreHook);
 blogPostSchema.post('remove', blogPostPostHook);
 // -------------------------------------------------------------------------------------
 
-module.exports = mongoose.model('blog-post', blogPostSchema);
+module.exports = mongoose.model('blog-post-schema', blogPostSchema);
