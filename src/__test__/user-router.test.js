@@ -91,7 +91,9 @@ describe('testing app.js routes and responses.', () => {
         console.log(createdMockUser);
         return superagent.delete(`http://localhost:${process.env.PORT}/login/${createdMockUser._id}`)
           .then((getResponse) => {
-            expect(getResponse.status).toEqual(201);
+            setTimeout(() => {
+              expect(getResponse.status).toEqual(201);
+            }, 200);
           });
       });
   });
