@@ -5,14 +5,14 @@
 
 These methods currently exist for creating, changing, deleting, and getting user data. Updates to this API will continue to stream in as this project moves forward. Currently I am part 14 of 14.
 
-#####Note: 
+##### Note: 
 Using a database (mongodb) and ORM (mongoose) to perform the data processing, a new 'many' resource (schema) has been added called blog-post-schema.
 
 Each user can now manage their user account and also create, update, get, and delete blog posts.
-#####Also note: 
+##### Also note: 
 new npm scripts have been added including a bash script to easily manage the devDb.
 
-#####working routes & their methods:
+##### working routes & their methods:
 user-router.js,
 blog-post-router.js
 * PUT
@@ -20,7 +20,7 @@ blog-post-router.js
 * POST
 * GET
 
-#####Utilizing:
+##### Utilizing:
 * express
 * middleware e.g. body-parser
 * mongodb
@@ -28,7 +28,7 @@ blog-post-router.js
 
 ## How To
 
-####Example testing with just jest:
+#### Example testing with just jest:
 
 ```
 npm run devDbOn
@@ -36,14 +36,14 @@ npm run justJest
 npm run devDbOff
 ```
 
-####Example testing manually via cli:
+#### Example testing manually via cli:
 
 ```
 npm run devDbOn
 npm run start-server
 ````
 
-##Blogpost manual testing
+## Blogpost manual testing
 
 *please note...*
 
@@ -141,7 +141,7 @@ X-Powered-By: Express
 [0]Benjamins-MacBook-Pro:11-14-express-api bwest$
 ```
 
-##User manual testing
+## User manual testing
 
 [x] adding a new user:
 
@@ -278,7 +278,7 @@ X-Powered-By: Express
 
 ### Tests Performed with Jest
 
-######testing app.js routes and responses.
+###### testing app.js routes and responses.
 
 ##### user-router.test.js
 
