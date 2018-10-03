@@ -9,6 +9,7 @@ const loggerMiddleware = require('./logger-middleware');
 const errorMiddleware = require('./error-middleware');
 
 const userRoutes = require('../routes/user-router');
+const blogPostRoutes = require('../routes/blog-post-router');
 
 const app = express();
 
@@ -19,13 +20,14 @@ const app = express();
 // middleware
 app.use(loggerMiddleware);
 app.use(userRoutes);
+app.use(blogPostRoutes);
 
 app.all('*', (request, response) => {
   logger.log(logger.INFO, '404 - catch-all/default route (route was not found)');
   return response.sendStatus(404);
 });
 
-// middleware
+// more middleware
 app.use(errorMiddleware);
 
 const server = module.exports = {};

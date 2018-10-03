@@ -1,19 +1,19 @@
 'use strict';
 
 const faker = require('faker');
-const Note = require('../../model/user-schema');
+const UserModel = require('../../model/user-schema');
 
-const noteMock = module.exports = {};
+const userMock = module.exports = {};
 
 // development note: p'Var' is a naming convention to know that the function will return promise
-noteMock.pCreateNoteMock = () => {
-  return new Note({
-    username: faker.lorem.words(5),
-    title: faker.lorem.words(6),
+userMock.pCreateUserMock = () => {
+  return new UserModel({
+    username: faker.lorem.words(1),
+    title: faker.lorem.words(2),
   }).save(); // development note: calling/using MONGO
 };
 
-noteMock.pCleanNoteMocks = () => {
+userMock.pCleanUserMocks = () => {
   // development note: this line here ensures that the DB is wiped when we call it again
-  return Note.remove({});
+  return UserModel.remove({});
 };

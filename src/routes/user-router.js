@@ -71,7 +71,7 @@ router.delete('/login/:id', (request, response, next) => {
   logger.log(logger.INFO, `Attempting delete on: ${request.params.id}`);
   //! development note:
   //   delete is true always true if object exists... be careful
-  return ModelUser.findByIdAndRemove(request.params.id, (error, deleteUser) => {
+  return ModelUser.findByIdAndRemove(`blogPosts.${request.params.id}`, (error, deleteUser) => {
     if (error) {
       return next(new HttpError(404, 'invalid user _id sent.'));
     }
