@@ -2,7 +2,6 @@
 
 // development note: - see test.env.js for environment includes
 
-// const faker = require('faker');
 const superagent = require('superagent');
 const server = require('../lib/server');
 const userMockObject = require('./lib/user-mock');
@@ -10,7 +9,7 @@ const userMockObject = require('./lib/user-mock');
 describe('testing app.js routes and responses.', () => {
   beforeAll(server.start);
   afterAll(server.stop);
-  beforeEach(userMockObject.pCleanNoteMocks);
+  beforeEach(userMockObject.pCleanUserMocks);
 
   test('should respond 200 and return a new user in json.', () => {
     return superagent.post(`http://localhost:${process.env.PORT}/new/user`)
@@ -23,7 +22,6 @@ describe('testing app.js routes and responses.', () => {
         expect(response.status).toEqual(200);
         expect(response.body.username).toEqual('bgwest88');
         expect(response.body.title).toEqual('Sysadmin / Junior Developer');
-
         expect(response.body.timestamp).toBeTruthy();
         expect(response.body._id.toString()).toBeTruthy();
       });
@@ -39,7 +37,7 @@ describe('testing app.js routes and responses.', () => {
   });
   test('if there is a matching id, should respond with 200 && json a note.', () => {
     let savedUserMock = null;
-    return userMockObject.pCreateNoteMock()
+    return userMockObject.pCreateUserMock()
       .then((createdMockUser) => {
         savedUserMock = createdMockUser;
         return superagent.get(`http://localhost:${process.env.PORT}/login/${createdMockUser._id}`);
@@ -60,7 +58,7 @@ describe('testing app.js routes and responses.', () => {
   });
   test('testing PUT method. should return updated body && 200 status.', () => {
     let savedUserMock = null;
-    return userMockObject.pCreateNoteMock()
+    return userMockObject.pCreateUserMock()
       .then((createdMockUser) => {
         savedUserMock = createdMockUser;
         return superagent.put(`http://localhost:${process.env.PORT}/login/${createdMockUser._id}`)
@@ -76,7 +74,7 @@ describe('testing app.js routes and responses.', () => {
       });
   });
   test('testing PUT method in the case where no body content is provided - should return 400.', () => {
-    return userMockObject.pCreateNoteMock()
+    return userMockObject.pCreateUserMock()
       .then((createdMockUser) => {
         return superagent.put(`http://localhost:${process.env.PORT}/login/${createdMockUser._id}`)
           .then(Promise.reject)
@@ -105,3 +103,4 @@ describe('testing app.js routes and responses.', () => {
         expect(getResponse.status).toEqual(404);
       });
   });
+});
