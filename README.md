@@ -1,6 +1,6 @@
 # 14: Express/Mongo/Mongoose - double resource - app.js
 ##### restful HTTP server built with express
-[![Build Status](https://travis-ci.com/bgwest/11-14-express-api.svg?branch=14-mongo-double-resource)](https://travis-ci.com/bgwest/11-14-express-api)
+[![Build Status](https://travis-ci.com/bgwest/11-14-express-api.svg?branch=14-mongo-double-resource-final)](https://travis-ci.com/bgwest/11-14-express-api)
 ## Current Features
 
 These methods currently exist for creating, changing, deleting, and getting user data. Updates to this API will continue to stream in as this project moves forward. Currently I am part 14 of 14.
