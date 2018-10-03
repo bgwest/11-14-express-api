@@ -86,13 +86,16 @@ describe('testing app.js routes and responses.', () => {
       });
   });
   test('attempting user creation and then deletion - successful delete should return 201', () => {
-    return userMockObject.pCreateNoteMock()
+    return userMockObject.pCreateUserMock()
       .then((createdMockUser) => {
         console.log(createdMockUser);
-        return superagent.delete(`http://localhost:${process.env.PORT}/login/${createdMockUser._id}`)
-          .then((getResponse) => {
-            expect(getResponse.status).toEqual(201);
-          });
+        // development note: needed to slow down the return wait for db to create it
+        setTimeout(() => {
+          return superagent.delete(`http://localhost:${process.env.PORT}/login/${createdMockUser._id}`)
+            .then((getResponse) => {
+              expect(getResponse.status).toEqual(201);
+            });
+        }, 1000);
       });
   });
   test('attempt to delete with bad ID - should return 404', () => {
@@ -102,80 +105,3 @@ describe('testing app.js routes and responses.', () => {
         expect(getResponse.status).toEqual(404);
       });
   });
-  // test('should respond 400 if there is no job role title.', () => {
-  //   return superagent.post(`http://localhost:${API_PORT}/new/user`)
-  //     .set('Content-Type', 'application/json')
-  //     .send({
-  //       username: 'bgwest',
-  //     })
-  //     .then(Promise.reject)
-  //     .catch((response) => {
-  //       expect(response.status).toEqual(400);
-  //     });
-  // });
-  // test('should respond with 200 status code and a json note if there is a matching id.', () => {
-  //   const originalRequest = {
-  //     username: faker.lorem.words(5),
-  //     title: faker.lorem.words(5),
-  //   };
-  //   return superagent.post(`http://localhost:${API_PORT}/new/user`)
-  //     .set('Content-Type', 'application/json')
-  //     .send(originalRequest)
-  //     .then((postResponse) => {
-  //       // development note: If you see this code at work, propose the use of MOCK OBJECTS...
-  //       originalRequest.id = postResponse.body.id;
-  //       return superagent.get(`http://localhost:${API_PORT}/login/${postResponse.body.id}`);
-  //     })
-  //     .then((getResponse) => {
-  //       expect(getResponse.status).toEqual(200);
-  //       expect(getResponse.body.timestamp).toBeTruthy();
-  //       expect(getResponse.body.id).toEqual(originalRequest.id);
-  //       expect(getResponse.body.title).toEqual(originalRequest.title);
-  //     });
-  // });
-  // test('should respond 204 if a user is removed', () => {
-  //   const ogRequest = {
-  //     username: faker.lorem.words(5),
-  //     title: faker.lorem.words(5),
-  //   };
-  //   return superagent.post(`http://localhost:${API_PORT}/new/user`)
-  //     .set('Content-Type', 'application/json')
-  //     .send(ogRequest)
-  //     .then((postResponse) => {
-  //       ogRequest.id = postResponse.body.id;
-  //       return superagent.delete(`http://localhost:${API_PORT}/login/${ogRequest.id}`);
-  //     })
-  //     .then((getResponse) => {
-  //       expect(getResponse.status).toEqual(204);
-  //     });
-  // });
-  // test('should respond 404 if user does not exist on delete request.', () => {
-  //   return superagent.delete(`http://localhost:${API_PORT}/login/hooo-boy-this-id-invalid`)
-  //     .then(Promise.reject)
-  //     .catch((getResponse) => {
-  //       expect(getResponse.status).toEqual(404);
-  //     });
-  // });
-  // test('if username update for user is successful, should respond 204', () => {
-  //   const ogRequest = {
-  //     username: faker.lorem.words(5),
-  //     title: faker.lorem.words(5),
-  //   };
-  //   return superagent.post(`http://localhost:${API_PORT}/new/user`)
-  //     .set('Content-Type', 'application/json')
-  //     .send(ogRequest)
-  //     .then((postResponse) => {
-  //       ogRequest.id = postResponse.body.id;
-  //       return superagent.put(`http://localhost:${API_PORT}/login/${ogRequest.id}`)
-  //         .send({
-  //           username: 'mrtrey',
-  //         });
-  //     })
-  //     .then((putResponse) => {
-  //       expect(putResponse.status).toEqual(200);
-  //       expect(putResponse.body.id).toEqual(ogRequest.id);
-  //       expect(putResponse.body.username).toEqual('mrtrey');
-  //       expect(putResponse.body.content).toEqual(ogRequest.content);
-  //     });
-  // });
-});
