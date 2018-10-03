@@ -1,4 +1,4 @@
-# 11: Express - app.js
+# 14: Express/Mongo/Mongoose - double resource - app.js
 ##### restful HTTP server built with express
 [![Build Status](https://travis-ci.com/bgwest/11-14-express-api.svg?branch=master)](https://travis-ci.com/bgwest/11-14-express-api)
 ## Current Features

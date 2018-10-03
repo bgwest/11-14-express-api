@@ -42,22 +42,24 @@ function blogPostPreHook(done) {
       return userFound.save();
     })
     .then(() => done()) // value => done(value)
-    .catch(error => done(error));
+    .catch(done); // error => done(error)
 }
 
 const blogPostPostHook = (document, done) => {
   return UserModel.findById(document.user)
     .then((userFound) => {
+      console.log(document);
       if (!userFound) {
         throw new HttpError(500, 'user not found');
       }
       userFound.blogPosts = userFound.blogPosts.filter((blogPost) => {
         return blogPost._id.toString() !== document._id.toString();
+        // return blogPost._doc._id.toString() !== document._id.toString();
       });
       return userFound.save();
     })
     .then(() => done()) // value => done(value)
-    .catch(error => done(error)); // .catch(done);
+    .catch(done); // error => done(error)
 }; // hard to find documentation on done() for mongoose ...
 
 blogPostSchema.pre('save', blogPostPreHook);

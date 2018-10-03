@@ -15,7 +15,7 @@ blogPostMock.pCreateBlogPostMock = () => {
       return new BlogPost({
         title: faker.lorem.words(5),
         content: faker.lorem.words(5),
-        category: createdUserMock._id,
+        user: createdUserMock._id,
       }).save();
     })
     .then((createdBlogPostMock) => {

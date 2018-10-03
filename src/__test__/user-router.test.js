@@ -87,10 +87,13 @@ describe('testing app.js routes and responses.', () => {
     return userMockObject.pCreateUserMock()
       .then((createdMockUser) => {
         console.log(createdMockUser);
-        return superagent.delete(`http://localhost:${process.env.PORT}/login/${createdMockUser._id}`)
-          .then((getResponse) => {
-            expect(getResponse.status).toEqual(201);
-          });
+        // development note: needed to slow down the return wait for db to create it
+        setTimeout(() => {
+          return superagent.delete(`http://localhost:${process.env.PORT}/login/${createdMockUser._id}`)
+            .then((getResponse) => {
+              expect(getResponse.status).toEqual(201);
+            });
+        }, 1000);
       });
   });
   test('attempt to delete with bad ID - should return 404', () => {
