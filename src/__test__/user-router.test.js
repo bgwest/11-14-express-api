@@ -2,7 +2,7 @@
 
 // development note: - see test.env.js for environment includes
 
-const faker = require('faker');
+// const faker = require('faker');
 const superagent = require('superagent');
 const server = require('../lib/server');
 const userMockObject = require('./lib/user-mock');
