@@ -1,16 +1,20 @@
 # 14: Express/Mongo/Mongoose - double resource - app.js
 ##### restful HTTP server built with express
-[![Build Status](https://travis-ci.com/bgwest/11-14-express-api.svg?branch=master)](https://travis-ci.com/bgwest/11-14-express-api)
+[![Build Status](https://travis-ci.com/bgwest/11-14-express-api.svg?branch=14-mongo-double-resource-final)](https://travis-ci.com/bgwest/11-14-express-api)
 ## Current Features
 
-These methods currently exist for creating, changing, deleting, and getting user data. Updates to this API will continue to stream in as this project moves forward. Currently I am part 13 of 14.
+These methods currently exist for creating, changing, deleting, and getting user data. Updates to this API will continue to stream in as this project moves forward. Currently I am part 14 of 14.
 
 #####Note: 
-storage has been moved from simple array / object (hash maps) to mongodb. All should still work the same but behind the scences I am now using a database (mongodb) and ORM (mongoose) to perform the data processing.
+Using a database (mongodb) and ORM (mongoose) to perform the data processing, a new 'many' resource (schema) has been added called blog-post-schema.
+
+Each user can now manage their user account and also create, update, get, and delete blog posts.
 #####Also note: 
 new npm scripts have been added including a bash script to easily manage the devDb.
 
-#####Current working methods:
+#####working routes & their methods:
+user-router.js,
+blog-post-router.js
 * PUT
 * DELETE
 * POST
@@ -24,14 +28,120 @@ new npm scripts have been added including a bash script to easily manage the dev
 
 ## How To
 
-#####Example testing:
+####Example testing with just jest:
+
+```
+npm run devDbOn
+npm run justJest
+npm run devDbOff
+```
+
+####Example testing manually via cli:
 
 ```
 npm run devDbOn
 npm run start-server
-npm run justJest
-npm run devDbOff
 ````
+
+##Blogpost manual testing
+
+*please note...*
+
+*a user must be created first in order to create a blog relationship. please keep this in mind when testing.*
+
+[x] adding a blog post to a set user:
+
+```
+[0]Benjamins-MacBook-Pro:11-14-express-api bwest$ echo '{"title":"My new blog post #1!","user":"5bb447525459ef3fbf11cecf"}' | http :3000/user/blog-posts
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 146
+Content-Type: application/json; charset=utf-8
+Date: Wed, 03 Oct 2018 04:37:46 GMT
+ETag: W/"92-7+jlelY76eIRGCn0tUCrBNV265s"
+X-Powered-By: Express
+
+{
+    "__v": 0,
+    "_id": "5bb4479a5459ef3fbf11ced0",
+    "timestamp": "2018-10-03T04:37:46.830Z",
+    "title": "My new blog post #1!",
+    "user": "5bb447525459ef3fbf11cecf"
+}
+
+[0]Benjamins-MacBook-Pro:11-14-express-api bwest$
+```
+*blog POST note... do not try and add content field on initial blog post creation.. only add content when doing a PUT (update)*
+
+[x] updating a blog post from a set user:
+
+```
+[0]Benjamins-MacBook-Pro:11-14-express-api bwest$ echo '{"title":"blog#5","content":"testing content input"}' | http PUT :3000/user/blog-posts/5bb4479a5459ef3fbf11ced0
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 166
+Content-Type: application/json; charset=utf-8
+Date: Wed, 03 Oct 2018 04:43:46 GMT
+ETag: W/"a6-RoeyFewAgY9BwqiAiPbjPXPMvec"
+X-Powered-By: Express
+
+{
+    "__v": 0,
+    "_id": "5bb4479a5459ef3fbf11ced0",
+    "content": "testing content input",
+    "timestamp": "2018-10-03T04:37:46.830Z",
+    "title": "blog#5",
+    "user": "5bb447525459ef3fbf11cecf"
+}
+
+[0]Benjamins-MacBook-Pro:11-14-express-api bwest$
+```
+
+[x] getting a blog post from a set user:
+
+```
+[0]Benjamins-MacBook-Pro:11-14-express-api bwest$ http :3000/user/blog-posts/5bb4479a5459ef3fbf11ced0
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 166
+Content-Type: application/json; charset=utf-8
+Date: Wed, 03 Oct 2018 04:44:22 GMT
+ETag: W/"a6-RoeyFewAgY9BwqiAiPbjPXPMvec"
+X-Powered-By: Express
+
+{
+    "__v": 0,
+    "_id": "5bb4479a5459ef3fbf11ced0",
+    "content": "testing content input",
+    "timestamp": "2018-10-03T04:37:46.830Z",
+    "title": "blog#5",
+    "user": "5bb447525459ef3fbf11cecf"
+}
+
+[0]Benjamins-MacBook-Pro:11-14-express-api bwest$
+```
+
+[x] deleting a blog post from a set user:
+
+```
+[0]Benjamins-MacBook-Pro:11-14-express-api bwest$ http DELETE :3000/user/blog-posts/5bb4479a5459ef3fbf11ced0
+HTTP/1.1 201 Created
+Connection: keep-alive
+Content-Length: 63
+Content-Type: application/json; charset=utf-8
+Date: Wed, 03 Oct 2018 04:44:44 GMT
+ETag: W/"3f-JyF6HTapnZbTVLWrOWeTSGSVWBs"
+X-Powered-By: Express
+
+{
+    "id": "5bb4479a5459ef3fbf11ced0",
+    "message": "Blog Post deleted"
+}
+
+[0]Benjamins-MacBook-Pro:11-14-express-api bwest$
+```
+
+##User manual testing
 
 [x] adding a new user:
 
@@ -170,6 +280,8 @@ X-Powered-By: Express
 
 ######testing app.js routes and responses.
 
+##### user-router.test.js
+
 * 1: create user - should respond 200 and return a new user in json
 
 * 2: attempt POST with no content to send - should receive 400
@@ -186,6 +298,15 @@ X-Powered-By: Express
 
 * 8: attempt to delete with bad ID - should return 404
 
+##### blog-post-router.test.js
+
+* 9: creating mock blogPost with mock user, using super agent for PUT update, and response should be 200 status
+
+* 10: create a mock blog post and try to get that post be sending it's id
+
+* 11: create a mock user and send it a blog post
+
+* 12: creating mock blog post / user and then deleting it
 
 ### Installing
 
